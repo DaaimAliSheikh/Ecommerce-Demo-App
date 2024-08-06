@@ -55,7 +55,7 @@ const ProductForm = ({
     return () => {
       form.unregister("image");
     };
-  }, [form.register, form.unregister]);
+  }, [form]);
 
   const { acceptedFiles, fileRejections, getRootProps, getInputProps } =
     useDropzone({
@@ -193,6 +193,7 @@ const ProductForm = ({
               <li key={file.name}>
                 <div className="relative">
                   <img
+                    alt="product image"
                     className="w-[5rem] h-[5rem] object-cover"
                     src={URL.createObjectURL(file)}
                   />

@@ -19,7 +19,7 @@ const Cart = ({ products }: { products: Product[] }) => {
   useEffect(() => {
     const dbItems = products.map((product) => product.id);
     validateItems(dbItems);
-  }, []);
+  }, [products, validateItems]);
   return (
     <Card className="w-full m-2 mx-auto  ">
       <div className="flex justify-between p-2">

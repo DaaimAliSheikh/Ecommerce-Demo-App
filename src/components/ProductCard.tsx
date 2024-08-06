@@ -37,7 +37,6 @@ const ProductCard = ({
 
   const router = useRouter();
 
-
   return (
     <Card
       onClick={() => {
@@ -59,8 +58,9 @@ const ProductCard = ({
           <p className="whitespace-nowrap">stock: {product.stock}</p>
         </div>
         <Image
-          className="w-full object-cover"
+          className="w-full object-contain object-center"
           src={product.image || ""}
+          sizes="100vw"
           alt="product image"
           width={100}
           height={100}
