@@ -23,7 +23,6 @@ import { adminLoginAction } from "@/actions/auth_actions";
 import ErrorAlert from "./ErrorAlert";
 import { LoaderCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import OAuthForm from "./OAuthForm";
 
 const LoginForm = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -99,15 +98,8 @@ const LoginForm = () => {
                 <LoaderCircle className="animate-spin ml-2" />
               ) : null}
             </Button>
-
-            <div className="flex items-center w-full">
-              <Separator className="w-[45%] mr-2" />
-              <p className="text-muted-foreground">or</p>
-              <Separator className="w-[45%] ml-2" />
-            </div>
           </form>
         </Form>
-        <OAuthForm />
       </CardContent>
     </Card>
   );
