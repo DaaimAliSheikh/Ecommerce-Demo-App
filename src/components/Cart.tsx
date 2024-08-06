@@ -17,8 +17,8 @@ const Cart = ({ products }: { products: Product[] }) => {
     }));
 
   useEffect(() => {
-    const dbItems = products.map((product) => product.id);
-    validateItems(dbItems);
+    // const dbItems = products.map((product) => product.id);
+    validateItems(products);
   }, [products, validateItems]);
   return (
     <Card className="w-full m-2 mx-auto  ">

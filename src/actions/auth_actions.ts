@@ -51,7 +51,6 @@ export const loginAction = async (data: LoginFormType) => {
   if (result.success) {
     try {
       const user = await getUserByEmailWithPassword(result.data.email);
-
       if (
         !user ||
         !user.password ||
@@ -62,7 +61,6 @@ export const loginAction = async (data: LoginFormType) => {
       await signIn("credentials", {
         email: result.data.email,
         password: result.data.password,
-        isAdmin: false,
         redirect: false,
       });
       return { success: true };
@@ -92,12 +90,11 @@ export const adminLoginAction = async (data: LoginFormType) => {
       await signIn("credentials", {
         email: result.data.email,
         password: result.data.password,
-        isAdmin: true,
         redirect: false,
       });
       return { success: true };
     } catch (e) {
-      console.log("Something went Wrong");
+      console.log(e);
       return { error: "Something went Wrong" };
     }
   }

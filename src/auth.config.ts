@@ -3,8 +3,7 @@ import type { NextAuthConfig } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { LoginFormSchema } from "./lib/LoginFormSchema";
 import bcrypt from "bcryptjs";
-import getUserByEmailWithPassword from "./lib/getUserByEmailWithPassword";
-import getAdminByEmailWithPassword from "./lib/getAdminByEmailWithPassword";
+import getAnyByEmailWithPassword from './lib/import { db } from "@/db/getAnyByEmailWithPassword';
 export default {
   providers: [
     GoogleProvider({
@@ -13,15 +12,11 @@ export default {
     }),
     Credentials({
       async authorize(credentials) {
-        const { email, password, isAdmin } = credentials;
+        const { email, password } = credentials;
         const result = LoginFormSchema.safeParse({ email, password });
 
         if (result.success) {
-          let user;
-
-          if (isAdmin)
-            user = await getAdminByEmailWithPassword(email as string);
-          else user = await getUserByEmailWithPassword(email as string);
+          let user = await getAnyByEmailWithPassword(email as string);
 
           if (
             !user ||

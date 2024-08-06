@@ -3,9 +3,7 @@ import { auth } from "@/auth";
 import AddProductCard from "@/components/AddProductCard";
 import Cart from "@/components/Cart";
 import ProductCard from "@/components/ProductCard";
-import { Button } from "@/components/ui/button";
 import getUserById from "@/lib/getUserById";
-import { Plus } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
@@ -19,8 +17,13 @@ const HomePage = async () => {
   return (
     <div className="flex flex-col ">
       {user.isAdmin ? (
-        <h1 className="p-2 w-full text-2xl">This is your Admin Dashboard</h1>
-      ) : null}
+        <h1 className="p-2 w-full text-2xl">
+          This is your Admin Dashboard for products
+        </h1>
+      ) : (
+        <h2 className="p-2 w-full text-2xl">Products</h2>
+      )}
+
       <section className="px-1 grid md:grid-cols-4 gap-2 grid-cols-2  ">
         {products.map((product) => {
           return (

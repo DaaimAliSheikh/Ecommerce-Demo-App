@@ -13,7 +13,7 @@ interface CartState {
   updateQuantity: (productId: string, change: number) => void; ///change is either 1 or -1
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
-  validateItems: (dbItems: string[]) => void;
+  validateItems: (dbItems: Product[]) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -65,11 +65,14 @@ export const useCartStore = create<CartState>()(
         set({ items: [] });
       },
 
-      validateItems: (dbItems: string[]) => {
+      validateItems: (dbItems: Product[]) => {
         set({
-          items: get().items.filter((item) =>
-            dbItems.includes(item.product.id)
-          ),
+          items: get()
+            .items.map((item) => ({
+              quantity: item.quantity,
+              product: dbItems.find((dbItem) => dbItem.id === item.product.id),
+            }))
+            .filter((item) => !!item.product) as CartItem[],
         });
       },
     }),
