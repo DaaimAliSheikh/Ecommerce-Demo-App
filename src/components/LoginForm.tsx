@@ -24,14 +24,18 @@ import ErrorAlert from "./ErrorAlert";
 import { LoaderCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import OAuthForm from "./OAuthForm";
+import SuccessAlert from "./SuccessAlert";
 
 const LoginForm = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
   const params = useSearchParams();
 
   useEffect(() => {
     if (params) {
       if (params.get("error") === "OAuthAccountNotLinked") {
+        setSuccessMsg(null);
         setErrorMsg("Email already registered with a different provider");
       }
     }
@@ -40,8 +44,13 @@ const LoginForm = () => {
   const onSubmit = useCallback(async (data: LoginFormType) => {
     const result = await loginAction(data);
 
-    if (result?.error) return setErrorMsg(result.error);
-    else if (result?.success) window.location.href = signInRedirectUrl;
+    if (result?.success) {
+      setSuccessMsg(null);
+      setErrorMsg(result.success); ///confirmation email sent
+    } else if (result?.error) {
+      setSuccessMsg(null);
+      setErrorMsg(result.error);
+    } else if (result?.loggedIn) window.location.href = signInRedirectUrl;
   }, []);
 
   const form = useForm<LoginFormType>({
@@ -88,6 +97,7 @@ const LoginForm = () => {
               )}
             />
             {errorMsg ? <ErrorAlert>{errorMsg}</ErrorAlert> : null}
+            {successMsg ? <SuccessAlert>{successMsg}</SuccessAlert> : null}
 
             <Button
               disabled={form.formState.isSubmitting}

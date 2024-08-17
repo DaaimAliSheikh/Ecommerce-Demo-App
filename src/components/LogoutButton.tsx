@@ -7,7 +7,9 @@ import { Power } from "lucide-react";
 const LogoutButton = () => {
   return (
     <Button
+      size={"sm"}
       variant={"ghost"}
+      className="w-full flex justify-start"
       onClick={async () => {
         localStorage.removeItem("cart-storage");
         await logoutAction();

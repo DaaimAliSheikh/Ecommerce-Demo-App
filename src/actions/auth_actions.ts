@@ -7,6 +7,7 @@ import { RegisterFormSchema, RegisterFormType } from "@/lib/RegisterFormSchema";
 import bcrypt from "bcryptjs";
 import getUserByEmailWithPassword from "@/lib/getUserByEmailWithPassword";
 import getAdminByEmailWithPassword from "@/lib/getAdminByEmailWithPassword";
+import sendVerifyToken from "@/lib/sendVerifyToken";
 
 export const registerAction = async (data: RegisterFormType) => {
   const result = RegisterFormSchema.safeParse(data);
@@ -30,16 +31,12 @@ export const registerAction = async (data: RegisterFormType) => {
           password: await bcrypt.hash(result.data.password, 10),
         },
       });
-      await signIn("credentials", {
-        email: result.data.email,
-        password: result.data.password,
-        redirect: false,
-      });
-      return { success: true };
+      await sendVerifyToken(result.data.email);
+      return { success: "Verification Email Sent" };
     } catch (e) {
       console.log(e);
+      return { error: "Something went Wrong" };
     }
-    return { error: "Something went Wrong" };
   }
 };
 
@@ -59,13 +56,18 @@ export const loginAction = async (data: LoginFormType) => {
       )
         return { error: "Invalid Credentials" };
 
+      if (!user.emailVerified) {
+        await sendVerifyToken(result.data.email);
+        return { success: "Verification email sent!" };
+      }
+
       await signIn("credentials", {
         email: result.data.email,
         password: result.data.password,
         isAdmin: false,
         redirect: false,
       });
-      return { success: true };
+      return { loggedIn: true };
     } catch (e) {
       console.log(e);
       return { error: "Something went Wrong" };
@@ -88,6 +90,8 @@ export const adminLoginAction = async (data: LoginFormType) => {
         !(await bcrypt.compare(result.data.password, user.password))
       )
         return { error: "Invalid Credentials" };
+
+      ///no email verification check for admins
 
       await signIn("credentials", {
         email: result.data.email,

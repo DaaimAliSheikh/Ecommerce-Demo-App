@@ -11,6 +11,8 @@ const inter = Inter({
   variable: "--global-font",
 });
 
+
+
 export default async function RootLayout({
   children,
 }: Readonly<{

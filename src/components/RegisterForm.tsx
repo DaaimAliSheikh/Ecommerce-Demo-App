@@ -22,14 +22,18 @@ import { LoaderCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import OAuthForm from "./OAuthForm";
 import { signInRedirectUrl } from "@/routes";
+import SuccessAlert from "./SuccessAlert";
 
 const RegisterForm = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
   const params = useSearchParams();
 
   useEffect(() => {
     if (params) {
       if (params.get("error") === "OAuthAccountNotLinked") {
+        setSuccessMsg(null);
         setErrorMsg("Email already registered with a different provider");
       }
     }
@@ -47,8 +51,13 @@ const RegisterForm = () => {
 
   const onSubmit = useCallback(async (data: RegisterFormType) => {
     const result = await registerAction(data);
-    if (result?.error) return setErrorMsg(result.error);
-    else if (result?.success) window.location.href = signInRedirectUrl;
+    if (result?.error) {
+      setSuccessMsg(null);
+      setErrorMsg(result.error);
+    } else if (result?.success) {
+      setErrorMsg(null);
+      setSuccessMsg(result.success);
+    }
   }, []);
 
   return (
@@ -99,6 +108,7 @@ const RegisterForm = () => {
               )}
             />
             {errorMsg ? <ErrorAlert>{errorMsg}</ErrorAlert> : null}
+            {successMsg ? <SuccessAlert>{successMsg}</SuccessAlert> : null}
 
             <Button
               disabled={form.formState.isSubmitting}

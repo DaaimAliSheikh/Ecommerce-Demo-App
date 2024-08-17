@@ -3,9 +3,7 @@ import { auth } from "@/auth";
 import AddProductCard from "@/components/AddProductCard";
 import Cart from "@/components/Cart";
 import ProductCard from "@/components/ProductCard";
-import { Button } from "@/components/ui/button";
 import getUserById from "@/lib/getUserById";
-import { Plus } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
