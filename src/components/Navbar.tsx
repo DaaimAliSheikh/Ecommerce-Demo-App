@@ -23,7 +23,6 @@ import { Righteous } from "next/font/google";
 import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 import { Moon, Sun } from "lucide-react";
-import NavbarDropdownContent from "./NavbarDropdownContent";
 
 const righteous = Righteous({
   subsets: ["latin"],
@@ -97,8 +96,6 @@ const Navbar = async () => {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-         <NavbarDropdownContent/>
-       
         </DropdownMenu>
       </Card>
     </nav>
